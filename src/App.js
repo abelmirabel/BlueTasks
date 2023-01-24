@@ -1,10 +1,19 @@
+import React, { Component } from 'react';
+import NavBar from './components/NavBar';
 
-function App() {
-  return (
-    <div className="App">
-      <h1>teste</h1>
-    </div>
-  );
+class App extends Component {
+  //constructor(props) {  
+    //super(props)
+  //}
+
+
+  render() {
+    return (
+        <div className="App">
+          <NavBar />
+        </div>
+    );
+  }
 }
 
 export default App;
