@@ -14,7 +14,9 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <NavBar />
-          <TaskListTable />
+          <div className='container' style={{ margin: 20 }}>
+            <TaskListTable />
+          </div>
         </div>
       </BrowserRouter>
     );
