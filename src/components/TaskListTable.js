@@ -51,7 +51,6 @@ class TaskListTable extends Component {
         }
         return (
             <>
-            <Alert message="Este é um alerta de teste!"/>
             <table className="table table-striped">
                 <TableHeader />
 

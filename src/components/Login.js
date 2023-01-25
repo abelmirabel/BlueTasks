@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import AuthService from '../api/AuthService';
 import Alert from './Alert';
 
@@ -11,7 +12,8 @@ class Login extends Component {
             username: "",
             password: "",
             alert: null,
-            processing: false
+            processing: false,
+            loggedIn: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,8 +22,21 @@ class Login extends Component {
     
     handleSubmit(event){
         event.preventDefault();
-        AuthService.login(this.state.username, this.state.password);
+        this.setState({ processing: true });
+        AuthService.login(this.state.username, this.state.password,
+            success => {
+                if (success) {
+                    this.setState({ loggedIn: true, processing: false });
+                    this.props.onLoginSuccess();
+                } else {
+                    this.setState({ alert: "O login não pode ser realizado", processing: false });
+                }
+
+                this.setState({ processing: false });
+        });
     }
+
+  
 
     handleInputChanged(event){
         const field = event.target.name;
@@ -30,6 +45,10 @@ class Login extends Component {
     }
 
     render() {
+        if(this.state.loggedIn){
+            return <Redirect to="/" />
+        }
+
         return (
             <div>
                 <h1>Login</h1>
