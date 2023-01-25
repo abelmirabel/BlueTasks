@@ -45,6 +45,10 @@ class Login extends Component {
     }
 
     render() {
+        if(AuthService.isAuthenticated()){
+            return <Redirect to="/" />
+        }
+
         if(this.state.loggedIn){
             return <Redirect to="/" />
         }
