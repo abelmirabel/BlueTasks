@@ -20,6 +20,14 @@ class TaskForm extends Component {
         this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
     }
     
+    componentDidMount() {
+        const editId = this.props.match.params.id;
+        if(editId){
+            const task = TaskService.load(~~editId);//converte para string para inteiro
+            this.setState({task: task});
+        }
+    }
+    
 
     onSubmitHandler(event){
         event.preventDefault();
@@ -48,6 +56,7 @@ class TaskForm extends Component {
                         <input type="text" 
                             className="form-control"
                             name="description"
+                            value={this.state.task.description}
                             placeholder='Digite a descrição'
                             onChange={this.onInputChangeHandler} />
                     </div>
@@ -56,6 +65,7 @@ class TaskForm extends Component {
                         <input type="date" 
                             className="form-control"
                             name="whenToDo"
+                            value={this.state.task.whenToDo}
                             placeholder='Informe a data' 
                             onChange={this.onInputChangeHandler} />
                     </div>
