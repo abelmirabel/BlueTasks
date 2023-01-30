@@ -23,10 +23,11 @@ class TaskService{
         return this.tasks.filter(t => t.id === id)[0];
     }
 
-    delete(id){
-        this.tasks = this.tasks.filter(task => task.id !== id );
+    delete(id, onDelete, onError) {
+        axios.delete(`${API_ENDPOINT}/tasks/${id}`, this.buildAuthHeader())
+            .then(() => onDelete())
+            .catch(e => onError(e));
     }
-
     save(task){
         if(task.id !== 0 ){
             this.tasks = this.tasks.map(t => task.id !== t.id ? t : task );
