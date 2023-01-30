@@ -80,11 +80,11 @@ class TaskListTable extends Component {
                         <TableHeader />
                         {this.state.tasks.length > 0 ?
                             <TableBody 
-                            tasks={ this.state.tasks } 
-                            onDelete={this.onDeleteHandler}
-                            onEdit={this.onEditHandler}
-                            onStatusChange={this.onStatusChangeHandler}
-                            />
+                                tasks={ this.state.tasks } 
+                                onDelete={this.onDeleteHandler}
+                                onEdit={this.onEditHandler}
+                                onStatusChange={this.onStatusChangeHandler}
+                                />  
                             :
                             <EmptyTableBody />
                         }
