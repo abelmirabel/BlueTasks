@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import AuthService from '../api/AuthService';
-import Alert from './Alert';
+import Alert from './Alert'
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
-
     constructor(props) {
         super(props);
         
-        this.state ={
+        this.state = {
             username: "",
             password: "",
             alert: null,
@@ -18,9 +17,10 @@ class Login extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChanged = this.handleInputChanged.bind(this);
+        this.handleLoginResponse = this.handleLoginResponse.bind(this);
     }
-    
-    handleSubmit(event){
+
+    handleSubmit(event) {
         event.preventDefault();
         this.setState({ processing: true });
         AuthService.login(this.state.username, this.state.password,
@@ -31,25 +31,25 @@ class Login extends Component {
                 } else {
                     this.setState({ alert: "O login não pode ser realizado", processing: false });
                 }
-
-                this.setState({ processing: false });
         });
     }
 
-  
+    handleLoginResponse(sucess){
+        if(sucess){
+            this.setState.apply({ loggedIn: true });
+        }else{
+            this.setState({ alert: "O login não pode ser realizado!" });
+        }
+    }
 
-    handleInputChanged(event){
+    handleInputChanged(event) {
         const field = event.target.name;
         const value = event.target.value;
         this.setState({ [field]: value });
     }
 
     render() {
-        if(AuthService.isAuthenticated()){
-            return <Redirect to="/" />
-        }
-
-        if(this.state.loggedIn){
+        if (AuthService.isAuthenticated() || this.state.loggedIn) {
             return <Redirect to="/" />
         }
 
@@ -57,33 +57,31 @@ class Login extends Component {
             <div>
                 <h1>Login</h1>
                 { this.state.alert !== null ? <Alert message={this.state.alert} /> : "" }
-                <form onSubmit={this.handleSubmit} >
-                    <div className='form-group'>
-                        <label htmlFor='username'>Usuário</label>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="username">Usuário</label>
                         <input
                             type="text"
-                            className='form-control'
+                            className="form-control"
                             onChange={this.handleInputChanged}
                             value={this.state.username}
                             name="username"
-                            placeholder='Digite o usuário'
-                        />
+                            placeholder="Digite o usuário" />
                     </div>
-                    <div className='form-group'>
-                        <label htmlFor='password'>Senha</label>
+                    <div className="form-group">
+                        <label htmlFor="password">Senha</label>
                         <input
                             type="password"
-                            className='form-control'
+                            className="form-control"
                             onChange={this.handleInputChanged}
                             value={this.state.password}
                             name="password"
-                            placeholder='Digite o usuário'
-                        />
+                            placeholder="Digite a senha" />
                     </div>
-                    <button type='submit'
-                        className='btn btn-primary'
-                        disabled={this.state.processing}
-                    >Login </button>
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={this.state.processing}>Login</button>
                 </form>
             </div>
         );
