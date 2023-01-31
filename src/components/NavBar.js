@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { APP_NAME } from '../constants';
 import NavBarItem from './NavBarItem';
+import { APP_NAME } from '../constants';
+import AuthService from '../api/AuthService';
 
 class NavBar extends Component {
     constructor(props) {
@@ -8,24 +9,32 @@ class NavBar extends Component {
 
         this.state = {
             items: [
-                {name: "Listar tarefas", href:"/", active: true},
-                {name: "Nova tarefa", href:"/form", active: false}
+                { name: "Listar Tarefas", href: "/", active: true },
+                { name: "Nova Tarefa", href: "/form", active: false }
             ]
         }
 
         this.onClickHandler = this.onClickHandler.bind(this);
+        this.onLogoutHandler = this.onLogoutHandler.bind(this);
     }
 
-    onClickHandler(itemClicked){
+    onClickHandler(itemClicked) {
         const items = [...this.state.items];
+
         items.forEach(item => {
-            if(item.name === itemClicked.name){
+            if (item.name === itemClicked.name) {
                 item.active = true;
-            }else{
+            } else {
                 item.active = false;
             }
         })
+
         this.setState({ items });
+    }
+
+    onLogoutHandler() {
+        AuthService.logout();
+        this.props.onLinkClick();
     }
 
     render() {
@@ -43,7 +52,17 @@ class NavBar extends Component {
                                     key={i.name}
                                     item={i}
                                     onClick={this.onClickHandler} />)}
+                            { AuthService.isAuthenticated() ?
+                                <NavBarItem 
+                                    item={ { name: "Logout", active: false, href: "#" } }
+                                    onClick={this.onLogoutHandler} />
+                                : ""
+                            }
                         </div>
+                        <span className="navbar-text">
+                            { AuthService.isAuthenticated() ?
+                                `Olá, ${AuthService.getJWTTokenData().displayName}!` : "" }
+                        </span>
                     </div>
                 </nav>
             </div>
